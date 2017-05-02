@@ -7,23 +7,33 @@ public class Sortierung {
 		int parameter1=0; 
 		
 		//Wenn nur die länge gegeben ist bzw. ein Parameter
-		if(args.length == 1){
+		if(args.length == 2){
 			//prüfen ob eine Zahl eingegeben wurde 
 			try{
 				  parameter1 = Integer.parseInt(args[0]);
 			}catch(NumberFormatException e){
 				  System.out.println("Parameter ist keine Zahl");
 			}
-			//prüfen ob die Zahl im zulässigen Bereich liegt
-			if(parameter1 > 0 && parameter1 < 2147483647){
+			//prüfen ob die Zahl im zulässigen Bereich liegt so wie Unterscheidung merge und insert
+			if(parameter1 > 0 && parameter1 < 2147483647 && (args[1].equals("insert") || args[1].equals("merge"))){
 				array = new int[parameter1];
 				//da kein Parameter übergeben wird rand = ""
 				fill("",array);
-				//Zeitmessung starten
-				long tStart = System.currentTimeMillis();
-				insertionSort(array);
-				//Zeitmessung beenden
-				long tEnd = System.currentTimeMillis();
+				long tStart=0;
+				long tEnd=0;
+				if(args[1].equals("insert")){
+					//Zeitmessung starten
+					tStart = System.currentTimeMillis();
+					insertionSort(array);
+					//Zeitmessung beenden
+					tEnd = System.currentTimeMillis();
+				}else if(args[1].equals("merge")){
+					//Zeitmessung starten
+					tStart = System.currentTimeMillis();
+					mergeSort(array);
+					//Zeitmessung beenden
+					tEnd = System.currentTimeMillis();
+				}
 				//Zeitmessung wird verrechnet
 				long msecs = tEnd - tStart;
 				boolean check = isSorted(array);
@@ -56,22 +66,32 @@ public class Sortierung {
 				System.out.println("Parameter sind falsch gewählt");
 			}
 		}
-		else if(args.length == 2){
+		else if(args.length == 3){
 			//prüfen ob eine Zahl eingegeben wurde
 			try{
 				  parameter1 = Integer.parseInt(args[0]);
 			}catch(NumberFormatException e){
 				  System.out.println("Parameter ist keine Zahl");
 			}
-			//prüfen ob die Zahl im zulässigen Bereich liegt und ob die Eingegebenen Abkürzungen stimmen
-			if(parameter1 > 0 && parameter1 < 2147483647 && (args[1].equals("auf") || args[1].equals("ab") || args[1].equals("rand"))){
+			//prüfen ob die Zahl im zulässigen Bereich liegt und ob die Eingegebenen Abkürzungen stimmen so wie Unterscheidung merge und insert
+			if(parameter1 > 0 && parameter1 < 2147483647 && (args[1].equals("insert") || args[1].equals("merge")) && (args[2].equals("auf") || args[2].equals("ab") || args[2].equals("rand"))){
 				array = new int[parameter1]; 
-				fill(args[1],array);
-				//Zeitmessung starten
-				long tStart = System.currentTimeMillis();
-				insertionSort(array);
-				//Zeitmessung beenden
-				long tEnd = System.currentTimeMillis();
+				fill(args[2],array);
+				long tStart=0;
+				long tEnd=0;
+				if(args[1].equals("insert")){
+					//Zeitmessung starten
+					tStart = System.currentTimeMillis();
+					insertionSort(array);
+					//Zeitmessung beenden
+					tEnd = System.currentTimeMillis();
+				}else if(args[1].equals("merge")){
+					//Zeitmessung starten
+					tStart = System.currentTimeMillis();
+					mergeSort(array);
+					//Zeitmessung beenden
+					tEnd = System.currentTimeMillis();
+				}
 				//Zeitmessung wird verrechnet
 				long msecs = tEnd - tStart;
 				boolean check = isSorted(array);
@@ -123,6 +143,62 @@ public class Sortierung {
 			array[index] = temp;
 		}
 		return array;
+	}
+	
+	public static int[] mergeSort(int[] array){
+		int[] tmpArray = new int[array.length];
+		mergeSort(array,tmpArray,0,array.length-1);
+		assert isSorted(array);
+		return tmpArray;
+	}
+	
+	static public void mergeTogether(int[] array, int[]tmpArray, int leftStart, int rightEnd){
+		int leftEnd, rightStart;
+		leftEnd = (rightEnd + leftStart) / 2;
+		rightStart = leftEnd + 1;
+		int leftIndex = leftStart;
+		int rightIndex = rightStart;
+		int tmpIndex = leftStart;
+		int size = rightEnd - leftStart +1;
+		
+		while(leftIndex <= leftEnd && rightIndex <= rightEnd){
+			if(array[leftIndex] <= array[rightIndex]){
+				tmpArray[tmpIndex] = array[leftIndex];
+				leftIndex++;
+			}else{
+				tmpArray[tmpIndex] = array[rightIndex];
+				rightIndex++;
+			}
+			tmpIndex++;
+		}
+		//kopieren des linken Teils in den tmp array
+		while(leftIndex <= leftEnd){
+			tmpArray[tmpIndex] = array[leftIndex];
+			tmpIndex++;
+			leftIndex++;
+		}
+		//kopieren des rechten Teils in den Array
+		while(rightIndex <= rightEnd){
+			tmpArray[tmpIndex] = array[rightIndex];
+			tmpIndex++;
+			rightIndex++;
+		}
+		//zusammenfügen der Arrays
+		for(int i=0; i<size; i++){
+			array[leftStart] = tmpArray[leftStart];
+			leftStart++;
+		}
+	}
+	
+	static public void mergeSort(int [] array, int[] tmpArray, int left, int right){
+		int middle;
+		if (right > left){
+			middle = (right + left) / 2;
+			//rekursive aufteilung des Mergesorts
+			mergeSort(array, tmpArray, left, middle);
+			mergeSort(array, tmpArray,(middle + 1), right);
+			mergeTogether(array, tmpArray, left, right);
+		}
 	}
 	
 	public static boolean isSorted(int[] array){
