@@ -21,7 +21,7 @@ public class GeometrischeSuche {
 				long tEnd=0;
 				long msecs = 0;
 				fill("ab",array);
-				System.out.print("");
+				System.out.println("");
 				System.out.print("Durchläufe: ");
 				while(status >= 1){				
 					msecs = 0;
