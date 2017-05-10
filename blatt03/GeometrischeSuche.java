@@ -1,4 +1,4 @@
-package dap2;
+
 
 public class GeometrischeSuche {
 	
@@ -22,7 +22,7 @@ public class GeometrischeSuche {
 				long msecs = 0;
 				fill("ab",array);
 				System.out.println("");
-				System.out.print("Durchläufe: ");
+				System.out.print("DurchlÃ¤ufe: ");
 				while(status >= 1){				
 					msecs = 0;
 					for(int x=0; x<parameter2; x++){
@@ -30,6 +30,9 @@ public class GeometrischeSuche {
 						bubbleSort(array);
 						//Zeitmessung beenden
 						tEnd = System.currentTimeMillis();
+						boolean check = isSorted(array);
+						//Hier wird mit den Assertions geprÃ¼ft ob der Algorithmus nach Plan abgelaufen ist
+						assert check : "Fehler bei der finalen Ãœbergabe des Algorithmus";
 						msecs = msecs + (tEnd - tStart);
 					}
 					msecs = msecs / parameter2;				
@@ -43,17 +46,17 @@ public class GeometrischeSuche {
 					}					
 				}			
 				System.out.println("");
-				int feldgrößeRechts = array.length;
-				int feldgrößeLinks = array.length/2;
+				int feldgrÃ¶eRechts = array.length;
+				int feldgrÃ¶eLinks = array.length/2;
 				//Man errechnet die Differenz teilt diese durch zwei um so an den Mittelwert zu kommen und um diesen zwischen 
 				//den Werten zu positionieren wir der kleinere addiert
-				int tempFeldgröße = ((feldgrößeRechts - feldgrößeLinks)/2) + feldgrößeLinks;
+				int tempFeldgrÃ¶e = ((feldgrÃ¶eRechts - feldgrÃ¶eLinks)/2) + feldgrÃ¶eLinks;
 				int startwert = 0;
-				int status2 = 1; //zähler bennen
-				System.out.println("BinäreSuche gestartet");
-				System.out.println("Durchläufe: ");
+				int status2 = 1; //zÃ¤hler bennen
+				System.out.println("BinÃ¤reSuche gestartet");
+				System.out.println("DurchlÃ¤ufe: ");
 				while(status2 >= 1){ 
-					array = new int[tempFeldgröße];
+					array = new int[tempFeldgrÃ¶e];
 					fill("ab", array);
 					msecs = 0;
 					//for schleife zum genaueren messen der Werte
@@ -61,6 +64,9 @@ public class GeometrischeSuche {
 						tStart = System.currentTimeMillis();
 						bubbleSort(array);
 						tEnd = System.currentTimeMillis();
+						boolean check = isSorted(array);
+						//Hier wird mit den Assertions geprÃ¼ft ob der Algorithmus nach Plan abgelaufen ist
+						assert check : "Fehler bei der finalen Ãœbergabe des Algorithmus";
 						msecs = msecs + (tEnd - tStart);
 					}
 					msecs = msecs / parameter2;
@@ -72,24 +78,24 @@ public class GeometrischeSuche {
 					//Wenn die milli sec kleiner sind und man in den rechten teil geht
 					}else if(msecs < parameter1*1000){
 						System.out.println(status2 + ": " + msecs + "ms ," + array.length + "Felder");
-						feldgrößeLinks = tempFeldgröße;
-						tempFeldgröße = ((feldgrößeRechts - feldgrößeLinks)/2) + feldgrößeLinks;
+						feldgrÃ¶eLinks = tempFeldgrÃ¶e;
+						tempFeldgrÃ¶e = ((feldgrÃ¶eRechts - feldgrÃ¶eLinks)/2) + feldgrÃ¶eLinks;
 						status2++;
 					//Wenn die milli sec kleiner sind und man in den linken teil geht
 					}else if(msecs > parameter1*1000){
 						System.out.println(status2 + ": " + msecs + "ms ," + array.length + "Felder");
-						feldgrößeRechts = tempFeldgröße;
-						tempFeldgröße = ((feldgrößeRechts - feldgrößeLinks)/2) + feldgrößeLinks;
+						feldgrÃ¶eRechts = tempFeldgrÃ¶e;
+						tempFeldgrÃ¶e = ((feldgrÃ¶eRechts - feldgrÃ¶eLinks)/2) + feldgrÃ¶eLinks;
 						status2++;
 					}else{
-						System.out.println("Logisch gibts es keine Möglichkeit diesen Fall zu erreichen");
+						System.out.println("Logisch gibts es keine MÃ¶glichkeit diesen Fall zu erreichen");
 					}
 					
 				}
 				
 			}
 		}else{
-			System.out.println("Fehler bei der Parameterübergabe");
+			System.out.println("Fehler bei der ParameterÃ¼bergabe");
 		}
 		 
 		
@@ -97,17 +103,32 @@ public class GeometrischeSuche {
 	
 	public static int[] bubbleSort(int[] array){
 		int n = array.length;
-		//Schleife für die gesamte Länge des arrays
+//		//Schleife fÃ¤r die gesamte LÃ¤nge des arrays
+//		for(int i=1; i<n; i++){
+//			//fÃ¤r die einzelnen DurchlÃ¤ufe
+//			for(int j=n-1; j>i+1; j--){
+//				//Wenn die nachfolgende Zahl kleiner ist wird getauscht
+//				if(array[j-1] > array[j]){
+//					int temp = array[j];
+//					array[j] = array[j-1];
+//					array[j-1] = temp;
+//				}
+//			}
+//		}
+		//Schleife fÃ¼r die gesamte LÃ¤nge des arrays
 		for(int i=1; i<n; i++){
-			//für die einzelnen Durchläufe
-			for(int j=n-1; j>i+1; j--){
+			//fÃ¼r die einzelnen DurchlÃ¤ufe
+			for(int j=0; j<n-1; j++){
 				//Wenn die nachfolgende Zahl kleiner ist wird getauscht
-				if(array[j-1] > array[j]){
+				if(array[j] > array[j+1]){
 					int temp = array[j];
-					array[j] = array[j-1];
-					array[j-1] = temp;
+					array[j] = array[j+1];
+					array[j+1] = temp;
 				}
 			}
+			boolean check = partSorted(array,((array.length-1)-i));
+			//Hier wird mit den Assertions geprÃ¼ft ob der Algorithmus nach Plan abgelaufen ist
+			assert check : "Fehler bei der implementierung des Algorithmus";
 		}
 		return array;
 	}
@@ -134,5 +155,24 @@ public class GeometrischeSuche {
 		}
 		
 		return array;
+	}
+	
+	public static boolean isSorted(int[] array){
+		//der array wird einmal komplett durchgezÃ¤hlt und immmer mit der vorherigen Zahl verglichen
+		for(int i=0; i<(array.length-1); i++){
+			if(array[i] > array[i+1]){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean partSorted(int[] array, int stelle){
+		for(int i=array.length-1; i>stelle; i--){
+			if(array[i] < array[i-1]){
+				return false;
+			}
+		}
+		return true;
 	}
 }
