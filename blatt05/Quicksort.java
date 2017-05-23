@@ -4,18 +4,18 @@ public class Quicksort {
 	public static void main(String[] args){
 				
 		if(args.length == 0 || args.length > 1){	
-				System.out.println("Falsche Argumenteingabe!");
+				System.out.println("Falsches Argument");
 				System.exit(1);
 		}
 		int laenge = 0;
 		try{
 			laenge = Integer.parseInt(args[0]);
 		}catch(Exception e){	
-			System.out.println("Keine Zahl uebergeben!");
+			System.out.println("Bitte ine Zahl übergeben");
 			System.exit(1);
 		}
 		if(laenge < 0){
-			System.out.println("Die Zahl darf nicht negativ sein.");
+			System.out.println("Keine negativen Zahlen");
 			System.exit(1);
 		}
 		int[] arr = new int[laenge];
