@@ -61,12 +61,14 @@ public class Muenzen{
 			//anzahl beschreibt wie viele Muenzen oder Scheine gebraucht werden
 			int anzahl = 0;
 
-			//solange der Geldbetrag groesser dem Schein- oder Muenzbetrag ist wird die anzahl erhöht
+			//solange der Geldbetrag groesser dem Schein- oder Muenzbetrag ist wird die anzahl erhoeht
 			//und der Betrag um den jeweiligen Wert verringert
 			while(betrag >= waehrung[i]){
 				anzahl = anzahl + 1;
 				betrag = betrag - waehrung[i];
 			}
+            boolean check = check(waehrung,betrag,i);
+            assert check : "Fehler im Verlauf des Algorithmus";
 			//Speichern der anzahl in dem Array
 			ausgabe[i] = anzahl;
 			i++;
@@ -75,7 +77,7 @@ public class Muenzen{
 	}
 
 	public static void print(int[] ausgabe, int[] waehrung){
-		System.out.print("Gewählte Scheine: ");
+		System.out.print("Gewaehlte Scheine: ");
 		for(int i = 0; i < ausgabe.length; i++){
 			if(i + 1 == ausgabe.length){
 				System.out.print( ausgabe[i] + "x" + waehrung[i]);
@@ -83,5 +85,12 @@ public class Muenzen{
 				System.out.print( ausgabe[i] + "x" + waehrung[i] + ", ");
 			}
 		}
-	}
+        System.out.println("");
+    }
+
+    public static boolean check(int[] waehrung,int betrag,int i){
+        if(betrag > waehrung[i]){
+            return false;
+        }return true;
+    } 
 }
