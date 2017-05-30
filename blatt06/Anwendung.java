@@ -9,6 +9,7 @@ import java.util.Collections;
 public class Anwendung {
 	static String dateiName;
 	static int ZeilenCount;
+	static int deadlineCount;
 
 	public Anwendung() {
 
@@ -159,6 +160,9 @@ public class Anwendung {
 		System.out.println("");
 		System.out.println("Berechnetes Latenessscheduling:");
 		jobIntArrAusgabe(ScheduleArr);
+		System.out.println("");
+		System.out.print("Berechnete maximale Verspätung:");
+		System.out.println(deadlineCount);
 	}
 
 	// Algorithmus zum Intervallscheduling, der in der Vorlesung vorgegeben
@@ -195,11 +199,16 @@ public class Anwendung {
 		//n um die Schleifenvariable zu erschaffen und um die l�nge f�r das erstellen des ausgabe arrays parat zuu haben
 		int n = jobs.size();
 		int[] ausgabe = new int[n];
+		deadlineCount = 0;
 		int z = 0;
 		//den gesamten array einmal durchlaufen
 		for(int i=0;i<n;i++){
 			ausgabe[i] = z;
 			z = z + jobs.get(i).getDauer();
+			//Die Deadline wird hoch gezählt
+			if(z - jobs.get(i).getDeadline() > deadlineCount){
+				deadlineCount = z - jobs.get(i).getDeadline();
+			}
 		}
 		return ausgabe;
 	}
@@ -212,9 +221,9 @@ public class Anwendung {
 	
 	// Sortiert die eingelesen Liste
 		public static ArrayList<Job> jobSortStart(ArrayList<Job> array) {
-			Collections.sort(array);
-			return array;
-		}
+		Collections.sort(array);
+		return array;
+	}
 
 	public static ArrayList<Intervall> intervallAuslesen(RandomAccessFile file) {
 		// String zeile initialisieren
