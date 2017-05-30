@@ -70,6 +70,8 @@ public class Anwendung {
 			int[] ScheduleArr = latenessScheduling(SortArr);
 			// Berechnung ausgeben
 			jobAusgabe(auslesenArr, SortArr, ScheduleArr);
+		}else{
+			System.out.println("Bitte Interval oder Lateness eingeben");
 		}
 	}
 
