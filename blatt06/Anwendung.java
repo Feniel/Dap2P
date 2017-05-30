@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 //Die Klasse implementiert den Algorithmus und organisiert das Einlesen und die Ausgabe
-public class Aufgabe6 {
+public class Anwendung {
 	static String dateiName;
 	static int ZeilenCount;
 
-	public Aufgabe6() {
+	public Anwendung() {
 
 	}
 
